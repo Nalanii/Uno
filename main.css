@@ -1,0 +1,27 @@
+.green, .red, .yellow, .blue {
+    height: 100px;
+    width: 75px;
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 40px;
+}
+
+.green {
+    background-color: #48BA29;
+}
+
+.red {
+    background-color: #E42929;
+}
+
+.yellow {
+    background-color: #ECE335;
+}
+
+.blue {
+    background-color: #1F75CE;
+}
+
