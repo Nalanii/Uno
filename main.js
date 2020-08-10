@@ -1,14 +1,26 @@
+var numPlayers = 4;
+var players = definePlayers();
+var hands = {};
+var table = {};
+
 $(document).ready(
     function()
     {
-        originalHand("player1");
-        originalHand("player2");
-        originalHand("player3");
-        originalHand("player4");
-        deck();
-        turn(1);
+        originalHands();
+        table();
+        turn("player2");
+        displayCards();
+
     }
 );
+
+function definePlayers(){
+    let players = [];
+    for(let i = 1; i<=numPlayers; i++){
+        players[i-1] = "player" + i;
+    }
+    return players;
+}
 
 function randomColor(){
     let colors = ["red", "green", "blue", "yellow"];
@@ -20,17 +32,62 @@ function randomNumber(){
     return cards[Math.floor(Math.random() * 13)]; 
 }
 
-function originalHand(idName){
-    let output = "";
-    for (let i = 0; i < 7; i++) {
-        output += "<button class=\"" + randomColor() + " " + idName + "\">" 
-               + randomNumber() + "</button>\n";
+function originalHands(){
+    var output = "";
+    for(let j = 0; j < numPlayers; j++){
+        var player = "player" + (j+1);
+        hands[player] = {};
+        output += "<p class=\"" + player + "\">Player " + (j+1) + "'s Cards: ";
+        for (let i = 0; i < 7; i++) {
+            var card = "card" + (i+1);
+            hands[player][card]={"color": randomColor(), 
+                                 "number": randomNumber(),
+                                 "disabled": ""};
+            output += "<button class=\"" + hands[player][card]["color"] + 
+                        "\"" + hands[player][card]["disabled"] + ">" + 
+                        hands[player][card]["number"] + "</button>\n";
+        }
+        output += "</p>";
     }
-    document.getElementById(idName).innerHTML += output;
+    
+    document.getElementById("players").innerHTML = output;
 }
 
-function deck(){
-    document.getElementById("deck").innerHTML += "<button class=\"" + 
-                                                 randomColor() + "\">" + 
-                                                 randomNumber() + "</button>\n";
+function displayCards(){
+    let output = "";
+    let playerNum = 1;
+    for(player in hands){
+        output += "<p class=\"" + player + "\">Player " + (playerNum) + "'s Cards: ";
+        for(card in hands[player]){
+            output += "<button class=\"" + hands[player][card]["color"] + 
+                        "\"" + hands[player][card]["disabled"] + ">" + 
+                        hands[player][card]["number"] + "</button>\n";
+        }
+        output += "</p>";
+    }
+    
+    document.getElementById("players").innerHTML = output;
+}
+
+function table(){
+    table["color"] = randomColor();
+    table["number"] = randomNumber();
+    document.getElementById("table").innerHTML += "<button class=\"" + 
+                                                 table["color"] + 
+                                                 " table \">" + 
+                                                 table["number"] + 
+                                                 "</button>\n";
+}
+
+function turn(playerTurn){
+    for (player in hands){
+        for (card in hands[player]){
+            hands[player][card]["disabled"] = "disabled";
+        }
+    }
+
+    for (card in hands[playerTurn]){
+        hands[playerTurn][card]["disabled"] = " ";
+    }
+
 }
