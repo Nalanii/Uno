@@ -1,4 +1,4 @@
-.green, .red, .yellow, .blue {
+.green, .red, .yellow, .blue, .draw {
     height: 100px;
     width: 75px;
     border: none;
@@ -23,6 +23,11 @@
 
 .blue {
     background-color: #1F75CE;
+}
+
+.draw {
+    background-color: black;
+    font-size: 20px;
 }
 
 button:disabled, button[disabled] {

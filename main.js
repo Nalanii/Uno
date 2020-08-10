@@ -34,13 +34,13 @@ function randomNumber(){
 }
 
 function originalHands(){
-    var output = "";
+    let output = "";
     for(let j = 0; j < numPlayers; j++){
-        var player = "player" + (j+1);
+        let player = "player" + (j+1);
         hands[player] = {};
         output += "<p class=\"" + player + "\">Player " + (j+1) + "'s Cards: ";
         for (let i = 0; i < 7; i++) {
-            var card = "card" + (i+1);
+            let card = "card" + (i+1);
             hands[player][card]={"color": randomColor(), 
                                  "number": randomNumber(),
                                  "disabled": ""};
@@ -66,6 +66,7 @@ function displayCards(){
                         " onClick=\"play('"+ player + "', '" + card + "');\"" + 
                         ">" + hands[player][card]["number"] + "</button>\n";
         }
+        playerNum++;
         output += "</p>";
     }
     
@@ -131,4 +132,14 @@ function nextTurn(){
         }
     }
     turn(playersTurn);
+}
+
+function draw(){
+    let cardNum = "card" + (Math.random() * Number.MAX_VALUE);
+    hands[playersTurn][cardNum] =  {
+        "color": randomColor(),
+        "number": randomNumber(),
+        "disabled": ""
+    };
+    displayCards();
 }
