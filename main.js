@@ -2,13 +2,14 @@ var numPlayers = 4;
 var players = definePlayers();
 var hands = {};
 var table = {};
+var playersTurn = "player1";
 
 $(document).ready(
     function()
     {
         originalHands();
-        table();
-        turn("player2");
+        originalTable();
+        turn(playersTurn);
         displayCards();
 
     }
@@ -44,8 +45,9 @@ function originalHands(){
                                  "number": randomNumber(),
                                  "disabled": ""};
             output += "<button class=\"" + hands[player][card]["color"] + 
-                        "\"" + hands[player][card]["disabled"] + ">" + 
-                        hands[player][card]["number"] + "</button>\n";
+                        "\"" + hands[player][card]["disabled"] + 
+                        " onClick=\"play('"+ player + "', '" + card + "');\"" +  
+                        ">" + hands[player][card]["number"] + "</button>\n";
         }
         output += "</p>";
     }
@@ -60,8 +62,9 @@ function displayCards(){
         output += "<p class=\"" + player + "\">Player " + (playerNum) + "'s Cards: ";
         for(card in hands[player]){
             output += "<button class=\"" + hands[player][card]["color"] + 
-                        "\"" + hands[player][card]["disabled"] + ">" + 
-                        hands[player][card]["number"] + "</button>\n";
+                        "\"" + hands[player][card]["disabled"] + 
+                        " onClick=\"play('"+ player + "', '" + card + "');\"" + 
+                        ">" + hands[player][card]["number"] + "</button>\n";
         }
         output += "</p>";
     }
@@ -69,7 +72,7 @@ function displayCards(){
     document.getElementById("players").innerHTML = output;
 }
 
-function table(){
+function originalTable(){
     table["color"] = randomColor();
     table["number"] = randomNumber();
     document.getElementById("table").innerHTML += "<button class=\"" + 
@@ -87,7 +90,23 @@ function turn(playerTurn){
     }
 
     for (card in hands[playerTurn]){
-        hands[playerTurn][card]["disabled"] = " ";
+        hands[playerTurn][card]["disabled"] = "";
     }
 
+}
+
+function canPlay(player, card){
+    return hands[player][card]["color"] === table["color"] || 
+           hands[player][card]["number"] === table["number"];
+}
+
+function play(player, card){
+    if(canPlay(player, card)){
+        delete hands[player][card];
+        
+        displayCards();
+    }
+    else{
+        alert("Can't play card");
+    }
 }
