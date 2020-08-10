@@ -70,12 +70,17 @@ function displayCards(){
     }
     
     document.getElementById("players").innerHTML = output;
+    document.getElementById("table").innerHTML = "Table: <button class=\"" + 
+                                                 table["color"] + 
+                                                 " table \">" + 
+                                                 table["number"] + 
+                                                 "</button>\n";
 }
 
 function originalTable(){
     table["color"] = randomColor();
     table["number"] = randomNumber();
-    document.getElementById("table").innerHTML += "<button class=\"" + 
+    document.getElementById("table").innerHTML = "Table: <button class=\"" + 
                                                  table["color"] + 
                                                  " table \">" + 
                                                  table["number"] + 
@@ -102,11 +107,28 @@ function canPlay(player, card){
 
 function play(player, card){
     if(canPlay(player, card)){
+        table["color"] = hands[player][card]["color"];
+        table["number"] = hands[player][card]["number"];
         delete hands[player][card];
-        
+        nextTurn();
         displayCards();
     }
     else{
         alert("Can't play card");
     }
+}
+
+function nextTurn(){
+    for(let i = 0; i < players.length; i++){
+        if(playersTurn == players[i]){
+            if(i+1 >= players.length){
+                playersTurn = players[0];
+            }
+            else{
+                playersTurn = players[i+1];
+            }
+            break;
+        }
+    }
+    turn(playersTurn);
 }
