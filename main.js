@@ -1,5 +1,6 @@
 var numPlayers = 4;
 var players = definePlayers();
+var uno = defineUno();
 var hands = {};
 var table = {};
 var playersTurn = "player1";
@@ -21,6 +22,14 @@ function definePlayers(){
         players[i-1] = "player" + i;
     }
     return players;
+}
+
+function defineUno(){
+    let uno = [];
+    for(let i = 0; i<numPlayers; i++){
+        uno[i-1] = false;
+    }
+    return uno;
 }
 
 function randomColor(){
@@ -61,19 +70,20 @@ function displayCards(){
     for(player in hands){
         output += "<p class=\"" + player + "\">Player " + (playerNum) + "'s Cards: ";
         for(card in hands[player]){
-            output += "<button class=\"" + hands[player][card]["color"] + 
+            output += "<button class=\"playable " + hands[player][card]["color"] + 
                         "\"" + hands[player][card]["disabled"] + 
                         " onClick=\"play('"+ player + "', '" + card + "');\"" + 
                         ">" + hands[player][card]["number"] + "</button>\n";
         }
         playerNum++;
-        output += "</p>";
+
+        output += "<button class='uno'>UNO</button></p>";
     }
     
     document.getElementById("players").innerHTML = output;
-    document.getElementById("table").innerHTML = "Table: <button class=\"" + 
+    document.getElementById("table").innerHTML = "Table: <button class=\"table " + 
                                                  table["color"] + 
-                                                 " table \">" + 
+                                                 " table \" disabled>" + 
                                                  table["number"] + 
                                                  "</button>\n";
 }
@@ -110,6 +120,15 @@ function play(player, card){
     if(canPlay(player, card)){
         table["color"] = hands[player][card]["color"];
         table["number"] = hands[player][card]["number"];
+        if(table["number"] === "+2"){
+            draw2();
+        }
+        else if(table["number"] === "S"){
+            nextTurn();
+        }
+        else if(table["number"] === "R"){
+            players.reverse();
+        }
         delete hands[player][card];
         nextTurn();
         displayCards();
@@ -142,4 +161,10 @@ function draw(){
         "disabled": ""
     };
     displayCards();
+}
+
+function draw2(){
+    nextTurn();
+    draw();
+    draw();
 }
