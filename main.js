@@ -27,7 +27,7 @@ function definePlayers(){
 function defineUno(){
     let uno = [];
     for(let i = 0; i<numPlayers; i++){
-        uno[i-1] = false;
+        uno[i] = false;
     }
     return uno;
 }
@@ -58,7 +58,7 @@ function originalHands(){
                         " onClick=\"play('"+ player + "', '" + card + "');\"" +  
                         ">" + hands[player][card]["number"] + "</button>\n";
         }
-        output += "</p>";
+        output += "<button class='uno' onclick = 'displayUno();'>UNO</button></p><p id='displayUno'></p>";
     }
     
     document.getElementById("players").innerHTML = output;
@@ -72,12 +72,16 @@ function displayCards(){
         for(card in hands[player]){
             output += "<button class=\"playable " + hands[player][card]["color"] + 
                         "\"" + hands[player][card]["disabled"] + 
-                        " onClick=\"play('"+ player + "', '" + card + "');\"" + 
+                        " onClick=\"play('"+ player + "', " + playerNum + ", '" + card + "');\"" + 
                         ">" + hands[player][card]["number"] + "</button>\n";
         }
+        if(almostUno(playerNum) && ("player" + playerNum) === playersTurn){
+            output += "<button class='uno' onclick='isUno(" + playerNum + ");'>UNO</button></p><p id='displayUno'></p>";
+        } else{
+            output += "<button class='uno' disabled >UNO</button><p id='displayUno'></p>";
+        }
+        
         playerNum++;
-
-        output += "<button class='uno'>UNO</button></p>";
     }
     
     document.getElementById("players").innerHTML = output;
@@ -116,7 +120,7 @@ function canPlay(player, card){
            hands[player][card]["number"] === table["number"];
 }
 
-function play(player, card){
+function play(player, playerNum, card){
     if(canPlay(player, card)){
         table["color"] = hands[player][card]["color"];
         table["number"] = hands[player][card]["number"];
@@ -130,7 +134,15 @@ function play(player, card){
             players.reverse();
         }
         delete hands[player][card];
-        nextTurn();
+        if(win(playerNum)){
+            if(!alert(playersTurn.toUpperCase() + " WINS!")){
+                window.location.reload();
+            }
+        }
+        else if(!isUno(playerNum)){
+            nextTurn();
+        }
+        
         displayCards();
     }
     else{
@@ -167,4 +179,31 @@ function draw2(){
     nextTurn();
     draw();
     draw();
+}
+
+function almostUno(playerNum){
+    if(Object.keys(hands["player"+(playerNum)]).length === 1){
+        return true;
+    }
+    return false;
+}
+
+function isUno(playerNum){
+    if(Object.keys(hands["player"+(playerNum)]).length === 1){
+        uno[playerNum - 1] = true;
+        displayUno();
+        return true;
+    }
+    return false;
+}
+
+function displayUno(){
+    document.getElementById("displayUno").innerHTML = "UNO";
+}
+
+function win(playerNum){
+    if(Object.keys(hands["player"+(playerNum)]).length === 0){
+        return true;
+    }
+    return false;
 }
