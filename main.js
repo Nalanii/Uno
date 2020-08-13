@@ -1,9 +1,11 @@
-var numPlayers = 4;
+var numPlayers = parseInt(prompt("Please enter the number of players:", 4));
 var players = definePlayers();
 var uno = defineUno();
 var hands = {};
 var table = {};
 var playersTurn = "player1";
+var timer;
+var timeout;
 
 $(document).ready(
     function()
@@ -58,7 +60,7 @@ function originalHands(){
                         " onClick=\"play('"+ player + "', '" + card + "');\"" +  
                         ">" + hands[player][card]["number"] + "</button>\n";
         }
-        output += "<button class='uno' onclick = 'displayUno();'>UNO</button></p><p id='displayUno'></p>";
+        output += "<button class='uno' onclick = 'displayUno();'>UNO</button></p>";
     }
     
     document.getElementById("players").innerHTML = output;
@@ -68,18 +70,19 @@ function displayCards(){
     let output = "";
     let playerNum = 1;
     for(player in hands){
-        output += "<p class=\"" + player + "\">Player " + (playerNum) + "'s Cards: ";
+        output += "<div class='container'><div class='row'><div class='col-sm-1'><p class=\"" + player + " player\">Player " + (playerNum) + "'s Cards: </div><div class='col-sm-6'>";
         for(card in hands[player]){
             output += "<button class=\"playable " + hands[player][card]["color"] + 
                         "\"" + hands[player][card]["disabled"] + 
                         " onClick=\"play('"+ player + "', " + playerNum + ", '" + card + "');\"" + 
-                        ">" + hands[player][card]["number"] + "</button>\n";
+                        ">" + hands[player][card]["number"] + "</button>";
         }
         let disabled = "disabled";
-        if(almostUno(playerNum) && ("player" + playerNum) === playersTurn){
+        if(uno[playerNum - 1] == true && isUno(playerNum) && ("player" + playerNum) === playersTurn && uno[playerNum-1] == true){
+            uno[playerNum - 1] = false;
             disabled = "";
         }
-        output += "<button class='uno' id='uno' onclick='isUno(" + playerNum + ");' " + disabled + ">UNO</button></p><p id='displayUno'></p>";
+        output += "</div><div class='col-sm-1'><button class='uno' id='uno' onclick='displayUno(" + timer + ", " + timeout + ");' " + disabled + ">UNO</button></p></div></div></div>";
         playerNum++;
     }
     
@@ -140,9 +143,17 @@ function play(player, playerNum, card){
         }
         else if(isUno(playerNum)){
             callUno();
+            timeout = setTimeout(
+                function(){ 
+                    nextTurn();
+                    displayCards(); 
+                }, 5000);
         }
-        nextTurn();
-        displayCards();
+        else{
+            clearUno();
+            nextTurn();
+            displayCards();
+        }
     }
     else{
         alert("Can't play card");
@@ -151,7 +162,7 @@ function play(player, playerNum, card){
 
 function nextTurn(){
     for(let i = 0; i < players.length; i++){
-        if(playersTurn == players[i]){
+        if(playersTurn === players[i]){
             if(i+1 >= players.length){
                 playersTurn = players[0];
             }
@@ -180,40 +191,40 @@ function draw2(){
     draw();
 }
 
-function almostUno(playerNum){
-    if(Object.keys(hands["player"+(playerNum)]).length === 1){
-        return true;
-    }
-    return false;
-}
 
 function isUno(playerNum){
     if(Object.keys(hands["player"+(playerNum)]).length === 1){
-        return true; 
         uno[playerNum - 1] = true;
+        return true; 
     }
-    return false;
+    else{
+        uno[playerNum - 1] = false;
+        return false;
+    }
+    
 }
 
 function callUno(){
     var timeleft = 5;
-        var timer = setInterval(function(){
-            if(document.getElementById('uno').clicked === true){
-                clearInterval(timer);
-                displayUno();
-            }
-            else if(timeleft <= 0 ){
-                clearInterval(timer);
-                alert("You didn't say Uno! +2 Cards");
-                draw();
-                draw();
-            }
-            timeleft -= 1;
-        }, 500);  
+    timer = setInterval(function(){
+        if(timeleft <= 0 ){
+            clearInterval(timer);
+            alert("You didn't say Uno! +2 Cards");
+            draw();
+            draw();
+        }
+        timeleft -= 1;
+    }, 500); 
+    displayCards();
 }
 
-function displayUno(){
-    document.getElementById("displayUno").innerHTML = "UNO";
+function displayUno(timer, timeout){
+    clearInterval(timer);
+    document.getElementById("displayUno").innerHTML += playersTurn + " UNO\n";
+}
+
+function clearUno(){
+    document.getElementById("displayUno").innerHTML = "";
 }
 
 function win(playerNum){

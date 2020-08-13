@@ -3,8 +3,9 @@
         <title>JacksUno</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="main.css">
+        <link rel="icon" href="Jacksuno.png" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="main.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         <script src="http://code.jquery.com/jquery-2.0.0.min.js"></script>
@@ -13,11 +14,42 @@
         
     </head>
     <body>
-        <div class="jumbotron text-center">
-            <h1>JacksUno</h1>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+              <ul class="nav navbar-nav">
+                <li><img src="Jacksuno.png"></li>
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="#">Page 1</a></li>
+                <li><a href="#">Page 2</a></li>
+                <li><a href="#">Page 3</a></li>
+              </ul>
+            </div>
+          </nav>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-8">
+                    <p id="players"></p>
+                </div>
+                <div class="col-sm-4">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <p id="tableCard"></p>
+                            </div>
+                            <div class="col-sm-2">
+                                <p><button class="draw" onclick="draw();">DRAW</button></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <p id='displayUno' class="displayUno"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <p id="players"></p>
-        <p id="tableCard"></p>
-        <p><button class="draw" onclick="draw();">DRAW</button></p>
+        
+        
     </body>
 </html>

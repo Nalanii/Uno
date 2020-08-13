@@ -1,3 +1,7 @@
+* {
+    font-family: Arial;
+}
+
 .playable, .tableCard, .uno, .draw {
     height: 100px;
     width: 75px;
@@ -38,8 +42,30 @@
     background-color: #E42929;
     -webkit-text-stroke: 1px black;
     color: #ECE335;
+    float: center;
 }
 
-.playable:disabled, .uno:disabled {
-    opacity: 0.5;
+.playable:disabled {
+    color: black;
+    background-color: black;
+}
+
+.uno:disabled {
+    opacity: 0;
+}
+
+.playable{
+    margin: 2px;
+}
+
+.row{
+    margin-bottom: 15px;
+}
+
+img{
+    height: 100px;
+}
+
+.displayUno{
+    font-size: 50px;
 }
