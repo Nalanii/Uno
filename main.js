@@ -75,19 +75,18 @@ function displayCards(){
                         " onClick=\"play('"+ player + "', " + playerNum + ", '" + card + "');\"" + 
                         ">" + hands[player][card]["number"] + "</button>\n";
         }
+        let disabled = "disabled";
         if(almostUno(playerNum) && ("player" + playerNum) === playersTurn){
-            output += "<button class='uno' onclick='isUno(" + playerNum + ");'>UNO</button></p><p id='displayUno'></p>";
-        } else{
-            output += "<button class='uno' disabled >UNO</button><p id='displayUno'></p>";
+            disabled = "";
         }
-        
+        output += "<button class='uno' id='uno' onclick='isUno(" + playerNum + ");' " + disabled + ">UNO</button></p><p id='displayUno'></p>";
         playerNum++;
     }
     
     document.getElementById("players").innerHTML = output;
-    document.getElementById("table").innerHTML = "Table: <button class=\"table " + 
+    document.getElementById("tableCard").innerHTML = "Table: <button class=\"tableCard " + 
                                                  table["color"] + 
-                                                 " table \" disabled>" + 
+                                                 " tableCard \" disabled>" + 
                                                  table["number"] + 
                                                  "</button>\n";
 }
@@ -95,9 +94,9 @@ function displayCards(){
 function originalTable(){
     table["color"] = randomColor();
     table["number"] = randomNumber();
-    document.getElementById("table").innerHTML = "Table: <button class=\"" + 
+    document.getElementById("tableCard").innerHTML = "Table: <button class=\"" + 
                                                  table["color"] + 
-                                                 " table \">" + 
+                                                 " tableCard \">" + 
                                                  table["number"] + 
                                                  "</button>\n";
 }
@@ -139,10 +138,10 @@ function play(player, playerNum, card){
                 window.location.reload();
             }
         }
-        else if(!isUno(playerNum)){
-            nextTurn();
+        else if(isUno(playerNum)){
+            callUno();
         }
-        
+        nextTurn();
         displayCards();
     }
     else{
@@ -190,11 +189,27 @@ function almostUno(playerNum){
 
 function isUno(playerNum){
     if(Object.keys(hands["player"+(playerNum)]).length === 1){
+        return true; 
         uno[playerNum - 1] = true;
-        displayUno();
-        return true;
     }
     return false;
+}
+
+function callUno(){
+    var timeleft = 5;
+        var timer = setInterval(function(){
+            if(document.getElementById('uno').clicked === true){
+                clearInterval(timer);
+                displayUno();
+            }
+            else if(timeleft <= 0 ){
+                clearInterval(timer);
+                alert("You didn't say Uno! +2 Cards");
+                draw();
+                draw();
+            }
+            timeleft -= 1;
+        }, 500);  
 }
 
 function displayUno(){
