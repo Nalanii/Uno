@@ -2,6 +2,11 @@
     font-family: Arial;
 }
 
+body {
+    background-image: url("background.jpg");
+    background-size: cover;
+}
+
 .playable, .tableCard, .uno, .draw {
     height: 100px;
     width: 75px;
@@ -10,28 +15,69 @@
     text-align: center;
     text-decoration: none;
     display: inline-block;
+    font-size: 75px;
+    border: 4px solid white;
+}
+
+.draw button{
+    background-color: none;
+    background-image: url('Jacksuno.png'); 
+    background-size: cover; 
+}
+
+.playable i, .tableCard i{
+    padding: 0px;
+    position: relative;
+    left: -5px;
+    top: 7px;
+}
+
+.numIcon p{
     font-size: 40px;
+    -webkit-text-stroke: 2px black;
+    position: relative;
+    top: -60px;
+    left: -2px;
 }
 
 .green {
     background-color: #48BA29;
 }
 
+.green p{
+    color: #48BA29;
+}
+
 .red {
     background-color: #E42929;
+}
+
+.red p{
+    color: #E42929;
 }
 
 .yellow {
     background-color: #ECE335;
 }
 
+.yellow p{
+    color: #ECE335;
+}
+
 .blue {
     background-color: #1F75CE;
 }
 
+.blue p{
+    color: #1F75CE;
+}
+
 .draw {
     background-color: black;
-    font-size: 20px;
+    background-image: url('Jacksuno.png'); 
+    background-repeat: no-repeat;
+    background-size: 65px; 
+    background-position: center;
 }
 
 .uno {
@@ -45,9 +91,15 @@
     float: center;
 }
 
-.playable:disabled {
-    color: black;
+.playable:disabled{
     background-color: black;
+    background-image: url('Jacksuno.png'); 
+    background-repeat: no-repeat;
+    background-size: 65px; 
+    background-position: center;
+}
+.playable:disabled div{
+    opacity: 0;
 }
 
 .uno:disabled {
@@ -63,9 +115,48 @@
 }
 
 img{
-    height: 100px;
+    height: 40px;
+    margin: 5px;
 }
 
 .displayUno{
     font-size: 50px;
+}
+
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+    color: #000; /*Sets the text hover color on navbar*/
+}
+
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active >
+        a:hover, .navbar-default .navbar-nav > .active > a:focus {
+    color: black; /*BACKGROUND color for active*/
+    background-color: #ECE335;
+}
+
+.navbar-default {
+    background: linear-gradient(45deg, #48BA29, #1F75CE);
+    border-color: #030033;
+}
+
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus {
+    color: #262626;
+    text-decoration: none;
+    background-color: #66CCFF; /*change color of links in drop down here*/
+}
+
+.nav > li > a:hover,
+.nav > li > a:focus {
+    text-decoration: none;
+    background-color: silver; /*Change rollover cell color here*/
+}
+
+.navbar-default .navbar-nav > li > a {
+    color: white; /*Change active text color here*/
+}
+
+.label{
+    color: white;
+    font-size: 20px;
+    vertical-align: middle;
 }

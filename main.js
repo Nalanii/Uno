@@ -49,7 +49,7 @@ function originalHands(){
     for(let j = 0; j < numPlayers; j++){
         let player = "player" + (j+1);
         hands[player] = {};
-        output += "<p class=\"" + player + "\">Player " + (j+1) + "'s Cards: ";
+        output += "<p class='label " + player + "'>Player " + (j+1);
         for (let i = 0; i < 7; i++) {
             let card = "card" + (i+1);
             hands[player][card]={"color": randomColor(), 
@@ -58,7 +58,7 @@ function originalHands(){
             output += "<button class=\"" + hands[player][card]["color"] + 
                         "\"" + hands[player][card]["disabled"] + 
                         " onClick=\"play('"+ player + "', '" + card + "');\"" +  
-                        ">" + hands[player][card]["number"] + "</button>\n";
+                        ">" + hands[player][card]["number"] + "</button>";
         }
         output += "<button class='uno' onclick = 'displayUno();'>UNO</button></p>";
     }
@@ -70,28 +70,44 @@ function displayCards(){
     let output = "";
     let playerNum = 1;
     for(player in hands){
-        output += "<div class='container'><div class='row'><div class='col-sm-1'><p class=\"" + player + " player\">Player " + (playerNum) + "'s Cards: </div><div class='col-sm-6'>";
+        output += "<div class='container'>" +
+                    "<div class='row'>" +
+                        "<div class='col-sm-1'>" +
+                            "<p class=\"label " + player + " player\">" +
+                                "Player " + (playerNum) +
+                            "</p>" +
+                        "</div>" + 
+                        "<div class='col-sm-6'>";
         for(card in hands[player]){
-            output += "<button class=\"playable " + hands[player][card]["color"] + 
-                        "\"" + hands[player][card]["disabled"] + 
-                        " onClick=\"play('"+ player + "', " + playerNum + ", '" + card + "');\"" + 
-                        ">" + hands[player][card]["number"] + "</button>";
+            output +=       "<button class=\"playable " + hands[player][card]["color"] + "\"" + hands[player][card]["disabled"] + " onClick=\"play('"+ player + "', " + playerNum + ", '" + card + "');\">" + 
+                                "<div class='numIcon'>" +
+                                    "<i class='fa fa-circle'></i>" +
+                                    "<p class='num'>" + hands[player][card]["number"] + "</p>" +
+                                "</div>" + 
+                            "</button>";
         }
         let disabled = "disabled";
         if(uno[playerNum - 1] == true && isUno(playerNum) && ("player" + playerNum) === playersTurn && uno[playerNum-1] == true){
             uno[playerNum - 1] = false;
             disabled = "";
         }
-        output += "</div><div class='col-sm-1'><button class='uno' id='uno' onclick='displayUno(" + timer + ", " + timeout + ");' " + disabled + ">UNO</button></p></div></div></div>";
+        output +=       "</div>" +
+                        "<div class='col-sm-1'>" +
+                            "<button class='uno' id='uno' onclick='displayUno(" + timer + ", " + timeout + ");' " + disabled + ">UNO</button>" +
+                        "</div>" + 
+                    "</div>" +
+                "</div>";
         playerNum++;
     }
     
     document.getElementById("players").innerHTML = output;
-    document.getElementById("tableCard").innerHTML = "Table: <button class=\"tableCard " + 
-                                                 table["color"] + 
-                                                 " tableCard \" disabled>" + 
-                                                 table["number"] + 
-                                                 "</button>\n";
+    document.getElementById("tableCard").innerHTML ="<button class='tableCard " + table["color"] + "' disabled>" +
+                                                        "<div class='numIcon'>" +
+                                                            "<i class='fa fa-circle'></i>"+ 
+                                                            "<p class='num'>" + table["number"] + "<p>" +
+                                                        "</div>" + 
+                                                    "</button>" +
+                                                    "<br /><br /><p class='label'>Table</p>";
 }
 
 function originalTable(){
@@ -101,7 +117,7 @@ function originalTable(){
                                                  table["color"] + 
                                                  " tableCard \">" + 
                                                  table["number"] + 
-                                                 "</button>\n";
+                                                 "</button>";
 }
 
 function turn(playerTurn){
